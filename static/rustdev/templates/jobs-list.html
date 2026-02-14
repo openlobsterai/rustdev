@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Jobs — rust.dev</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --fg: #c9d1d9; --fg2: #8b949e; --fg3: #6e7681; --link: #58a6ff; --orange: #d29922; --green: #3fb950; --border: #30363d; }
+        body { font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        #head { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 0; }
+        #head .wrap { display: flex; align-items: center; gap: 24px; }
+        #logo { font: bold 18px/1 monospace; color: var(--fg); }
+        #logo b { color: var(--orange); }
+        .back { color: var(--fg2); font-size: 13px; }
+        main { padding: 32px 0; }
+        .intro { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .intro h1 { font-size: 24px; margin-bottom: 8px; }
+        .intro p { color: var(--fg2); font-size: 14px; margin-bottom: 12px; }
+        .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+        .filter-tab { font-size: 12px; padding: 6px 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--fg2); cursor: pointer; transition: all 0.2s; }
+        .filter-tab:hover { border-color: var(--link); color: var(--link); }
+        .filter-tab.active { background: var(--bg3); border-color: var(--orange); color: var(--orange); }
+        .section { margin-bottom: 32px; }
+        .section h2 { font-size: 18px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .job-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 16px; transition: all 0.2s; position: relative; overflow: hidden; }
+        .job-card:hover { border-color: var(--link); transform: translateY(-2px); }
+        .job-card.hidden { display: none; }
+        .card-bg { position: absolute; top: 0; right: 0; width: 100px; height: 100px; opacity: 0.06; pointer-events: none; }
+        .card-bg img { width: 100%; height: 100%; object-fit: contain; }
+        .job-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; position: relative; z-index: 1; }
+        .company-logo { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); }
+        .job-header h3 { font-size: 15px; margin: 0; flex: 1; }
+        .job-header h3 a { color: var(--fg); }
+        .job-header h3 a:hover { color: var(--link); }
+        .company { font-size: 12px; color: var(--fg3); margin-bottom: 8px; }
+        .job-about { font-size: 12px; color: var(--fg2); line-height: 1.5; margin-bottom: 10px; }
+        .job-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 11px; }
+        .label-badge { font-size: 10px; padding: 2px 6px; background: var(--bg3); border-radius: 3px; color: var(--fg3); }
+        .verified { color: var(--green); }
+        .apply-btn { font-size: 12px; padding: 6px 12px; background: var(--link); color: #fff; border-radius: 4px; text-decoration: none; display: inline-block; margin-top: 8px; }
+        .apply-btn:hover { background: var(--orange); text-decoration: none; }
+        footer { border-top: 1px solid var(--border); padding: 16px 0; margin-top: 32px; font-size: 12px; color: var(--fg3); text-align: center; }
+    </style>
+</head>
+<body>
+<header id="head">
+    <div class="wrap">
+        <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+        <a href="/" class="back">← back to home</a>
+    </div>
+</header>
+<main>
+<div class="wrap">
+<div class="intro">
+    <h1>Rust Jobs</h1>
+    <p>High-quality Rust positions. No spam boards.</p>
+    
+    {{#if labels}}
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-label="all">All</button>
+        {{#each labels}}
+        <button class="filter-tab" data-label="{{this.slug}}">{{this.name}}</button>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>
+
+{{#if jobs}}
+<div class="section">
+    <h2>Open Positions</h2>
+    <div class="jobs-grid">
+        {{#each jobs}}
+        <div class="job-card" data-labels="{{#each this.labels}}{{this}}{{#unless @last}},{{/unless}}{{/each}}">
+            {{#if this.media.background_url}}
+            <div class="card-bg">
+                <img src="{{this.media.background_url}}" alt="{{this.company.name}}">
+            </div>
+            {{/if}}
+            <div class="job-header">
+                {{#if this.media.logo_url}}
+                <img src="{{this.media.logo_url}}" alt="{{this.company.name}}" class="company-logo">
+                {{/if}}
+                <h3><a href="{{this.apply_url}}" target="_blank" rel="noopener">{{this.title}}</a></h3>
+            </div>
+            <p class="company">{{this.company.name}}</p>
+            <p class="job-about">{{this.about}}</p>
+            <div class="job-meta">
+                <span class="label-badge">{{this.primary_label}}</span>
+                {{#if this.last_verified}}
+                <span class="verified">✓ Verified {{this.last_verified}}</span>
+                {{/if}}
+            </div>
+            <a href="{{this.apply_url}}" target="_blank" rel="noopener" class="apply-btn">Apply →</a>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/if}}
+
+</div>
+</main>
+<footer>
+    <div class="wrap">
+        <a href="/">rust.dev</a> — community-curated rust resources
+    </div>
+</footer>
+
+<script>
+// Filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.job-card');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const selectedLabel = this.getAttribute('data-label');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            cards.forEach(card => {
+                if (selectedLabel === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    const cardLabels = card.getAttribute('data-labels');
+                    if (cardLabels && cardLabels.includes(selectedLabel)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>

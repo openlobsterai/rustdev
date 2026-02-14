@@ -1,0 +1,36 @@
+<!-- TWITTER EMBED COMPONENT -->
+<!-- Usage: Include this wherever {{embed_twitter}} appears -->
+<!-- Required data: tweet_url or tweet_id -->
+
+<div class="embed-section">
+    <div class="twitter-container">
+        <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+            <a href="{{tweet_url}}">View Tweet</a>
+        </blockquote>
+    </div>
+</div>
+
+<!-- Load Twitter widget script -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<style>
+/* Twitter Embed Styles */
+.embed-section {
+    margin: 24px 0;
+}
+
+.twitter-container {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.twitter-tweet {
+    margin: 0 !important;
+}
+
+/* Dark theme support */
+.twitter-container iframe {
+    border-radius: 8px !important;
+}
+</style>
+

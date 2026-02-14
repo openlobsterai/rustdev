@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} — rust.dev</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --fg: #c9d1d9; --fg2: #8b949e; --fg3: #6e7681; --link: #58a6ff; --orange: #d29922; --green: #3fb950; --border: #30363d; }
+        html { height: 100%; }
+        body { font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); min-height: 100%; display: flex; flex-direction: column; }
+        main { flex: 1; }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+        #head { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 0; }
+        #head .wrap { display: flex; align-items: center; gap: 24px; }
+        #logo { font: bold 18px/1 monospace; color: var(--fg); }
+        #logo b { color: var(--orange); }
+        .back { color: var(--fg2); font-size: 13px; }
+        main { padding: 32px 0; }
+        .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+        .hero .tag { display: inline-block; font: 10px/1 monospace; padding: 4px 8px; background: rgba(63, 185, 80, 0.2); color: var(--green); border-radius: 3px; text-transform: uppercase; margin-bottom: 12px; }
+        .hero h1 { font-size: 28px; margin-bottom: 12px; line-height: 1.3; }
+        .hero .deck { font-size: 16px; color: var(--fg2); margin-bottom: 16px; }
+        .meta { font-size: 12px; color: var(--fg3); margin-bottom: 16px; }
+        .topics { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .topics span { font-size: 11px; padding: 3px 8px; background: var(--bg3); border-radius: 3px; color: var(--fg2); }
+        .content { font-size: 14px; line-height: 1.8; margin-bottom: 24px; white-space: pre-line; }
+        .section { margin-bottom: 24px; }
+        .section h2 { font-size: 16px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .section ul { list-style: none; padding-left: 0; }
+        .section li { padding: 6px 0; }
+        /* Embed styles */
+        .embed-section { margin: 24px 0; }
+        .video-container { position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 12px; }
+        .video-thumb { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; cursor: pointer; overflow: hidden; }
+        .video-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
+        .video-thumb:hover img { opacity: 0.85; }
+        .yt-play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; background-color: rgba(255, 0, 0, 0.9); border-radius: 14px; transition: background-color 0.2s; }
+        .video-thumb:hover .yt-play-button { background-color: #ff0000; }
+        .yt-play-button::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-35%, -50%); border-style: solid; border-width: 11px 0 11px 19px; border-color: transparent transparent transparent #fff; }
+        .video-thumb.playing { cursor: default; }
+        .video-thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-caption { font-size: 13px; color: var(--fg2); font-style: italic; margin-top: 8px; }
+        .twitter-container { max-width: 550px; margin: 0 auto; }
+        footer { border-top: 1px solid var(--border); padding: 16px 0; margin-top: 32px; font-size: 12px; color: var(--fg3); text-align: center; }
+    </style>
+</head>
+<body>
+<header id="head">
+    <div class="wrap">
+        <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+        <a href="/news" class="back">← back to news</a>
+    </div>
+</header>
+<main>
+<div class="wrap">
+<div class="hero">
+    <div class="tag">{{kind}}</div>
+    <h1>{{title}}</h1>
+    <p class="deck">{{deck}}</p>
+    <p class="meta">
+        Published: {{published_on}}
+        <!-- · By {{author_handle}} -->
+    </p>
+    
+    <div class="topics">
+        {{#each tags}}
+        <span>{{this}}</span>
+        {{/each}}
+    </div>
+</div>
+
+{{#if media}}
+<div class="section">
+    <h2>{{#if media.section_title}}{{media.section_title}}{{else}}Featured media{{/if}}</h2>
+    {{{embed_youtube}}}
+    {{{embed_twitter}}}
+</div>
+{{/if}}
+
+<div class="content">
+{{body_md}}
+</div>
+
+{{#if links}}
+<div class="section">
+    <h2>Links</h2>
+    <ul>
+        {{#each links}}
+        <li><a href="{{this.url}}" target="_blank" rel="noopener">{{this.label}} ↗</a></li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+</div>
+</main>
+<footer>
+    <div class="wrap">
+        <a href="/">rust.dev</a> — community-curated rust resources
+    </div>
+</footer>
+</body>
+</html>

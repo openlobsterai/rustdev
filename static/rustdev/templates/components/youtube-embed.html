@@ -1,0 +1,126 @@
+<!-- YOUTUBE EMBED COMPONENT -->
+<!-- Usage: Include this wherever {{embed_youtube}} appears -->
+<!-- Required data: video_id, video_title (optional) -->
+
+<div class="embed-section">
+    <div class="video-container">
+        <div class="video-thumb" data-video-id="{{video_id}}">
+            <img src="https://i.ytimg.com/vi/{{video_id}}/maxresdefault.jpg" 
+                 alt="{{video_title}}"
+                 onerror="this.src='https://i.ytimg.com/vi/{{video_id}}/hqdefault.jpg'">
+            <div class="yt-play-button"></div>
+        </div>
+    </div>
+    {{#if video_title}}
+    <p class="video-caption">{{video_title}}</p>
+    {{/if}}
+</div>
+
+<style>
+/* YouTube Embed Styles */
+.embed-section {
+    margin: 24px 0;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+    margin-bottom: 12px;
+}
+
+.video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s;
+}
+
+.video-thumb:hover img {
+    opacity: 0.85;
+}
+
+/* YouTube Play Button */
+.yt-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68px;
+    height: 48px;
+    background-color: rgba(255, 0, 0, 0.9);
+    border-radius: 14px;
+    transition: background-color 0.2s;
+    pointer-events: none;
+}
+
+.video-thumb:hover .yt-play-button {
+    background-color: #ff0000;
+}
+
+.yt-play-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-35%, -50%);
+    border-style: solid;
+    border-width: 11px 0 11px 19px;
+    border-color: transparent transparent transparent #fff;
+}
+
+/* When video is playing */
+.video-thumb.playing {
+    cursor: default;
+}
+
+.video-thumb iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-caption {
+    font-size: 13px;
+    color: var(--fg2);
+    font-style: italic;
+}
+</style>
+
+<script>
+// Click-to-play functionality
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.video-thumb').forEach(function(thumb) {
+        thumb.addEventListener('click', function() {
+            var videoId = this.getAttribute('data-video-id');
+            if (!videoId || this.classList.contains('playing')) return;
+            
+            // Create iframe
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1&autoplay=1';
+            iframe.title = 'YouTube video';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            
+            // Replace thumbnail with iframe
+            this.innerHTML = '';
+            this.appendChild(iframe);
+            this.classList.add('playing');
+        });
+    });
+});
+</script>
+

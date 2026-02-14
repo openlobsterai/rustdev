@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Tools — rust.dev</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --fg: #c9d1d9; --fg2: #8b949e; --fg3: #6e7681; --link: #58a6ff; --orange: #d29922; --green: #3fb950; --border: #30363d; }
+        body { font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        #head { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 0; }
+        #head .wrap { display: flex; align-items: center; gap: 24px; }
+        #logo { font: bold 18px/1 monospace; color: var(--fg); }
+        #logo b { color: var(--orange); }
+        .back { color: var(--fg2); font-size: 13px; }
+        main { padding: 32px 0; }
+        .intro { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .intro h1 { font-size: 24px; margin-bottom: 8px; }
+        .intro p { color: var(--fg2); font-size: 14px; margin-bottom: 12px; }
+        .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+        .filter-tab { font-size: 12px; padding: 6px 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--fg2); cursor: pointer; transition: all 0.2s; }
+        .filter-tab:hover { border-color: var(--link); color: var(--link); }
+        .filter-tab.active { background: var(--bg3); border-color: var(--orange); color: var(--orange); }
+        .section { margin-bottom: 32px; }
+        .section h2 { font-size: 18px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .tool-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; transition: all 0.2s; }
+        .tool-card:hover { border-color: var(--link); transform: translateY(-2px); }
+        .tool-card .header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .tool-icon { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); flex-shrink: 0; }
+        .tool-card h3 { font-size: 14px; margin: 0; flex: 1; }
+        .tool-card h3 a { color: var(--fg); }
+        .tool-card h3 a:hover { color: var(--link); }
+        .tool-card .desc { font-size: 12px; color: var(--fg2); line-height: 1.4; margin-bottom: 8px; }
+        .core-badge { background: rgba(63, 185, 80, 0.2); color: var(--green); font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 6px; }
+        .label-badge { font-size: 10px; padding: 2px 6px; background: var(--bg3); border-radius: 3px; color: var(--fg3); display: inline-block; }
+        .tool-card.hidden { display: none; }
+        footer { border-top: 1px solid var(--border); padding: 16px 0; margin-top: 32px; font-size: 12px; color: var(--fg3); text-align: center; }
+    </style>
+</head>
+<body>
+<header id="head">
+    <div class="wrap">
+        <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+        <a href="/" class="back">← back to home</a>
+    </div>
+</header>
+<main>
+<div class="wrap">
+<div class="intro">
+    <h1>Rust Tools</h1>
+    <p>Curated. Categorized. Built for teams.</p>
+    
+    {{#if labels}}
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-label="all">All</button>
+        {{#each labels}}
+        <button class="filter-tab" data-label="{{this.slug}}">{{this.name}}</button>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>
+
+{{#each categories}}
+<div class="section">
+    <h2>{{this.title}}</h2>
+    <div class="tool-grid">
+        {{#each this.tools}}
+        <div class="tool-card" data-tags="{{#each this.tags}}{{this}}{{#unless @last}},{{/unless}}{{/each}}" data-primary="{{this.primary_label}}">
+            <div class="header">
+                {{#if this.media.logo_url}}
+                <img src="{{this.media.logo_url}}" alt="{{this.name}}" class="tool-icon" onerror="this.style.display='none'">
+                {{/if}}
+                <h3>
+                    <a href="/tools/{{this.slug}}">{{this.name}}</a>
+                    {{#if (eq this.tier "core")}}<span class="core-badge">core</span>{{/if}}
+                </h3>
+            </div>
+            <p class="desc">{{this.description}}</p>
+            {{#if this.primary_label}}
+            <div class="label-badge">{{this.primary_label}}</div>
+            {{/if}}
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/each}}
+
+</div>
+</main>
+<footer>
+    <div class="wrap">
+        <a href="/">rust.dev</a> — community-curated rust resources
+    </div>
+</footer>
+
+<script>
+// Universal tag-based filtering
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.tool-card');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const selectedLabel = this.getAttribute('data-label');
+            
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter cards by tags (universal filtering)
+            cards.forEach(card => {
+                if (selectedLabel === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    // Check both tags and primary_label
+                    const tags = card.getAttribute('data-tags');
+                    const primary = card.getAttribute('data-primary');
+                    
+                    if ((tags && tags.includes(selectedLabel)) || primary === selectedLabel) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>
+

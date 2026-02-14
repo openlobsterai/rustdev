@@ -1,0 +1,902 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rust.dev — learn rust, build anywhere</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0d1117;
+            --bg2: #161b22;
+            --bg3: #21262d;
+            --fg: #c9d1d9;
+            --fg2: #8b949e;
+            --fg3: #6e7681;
+            --link: #58a6ff;
+            --orange: #d29922;
+            --green: #3fb950;
+            --red: #f85149;
+            --border: #30363d;
+        }
+        
+        body {
+            font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+        }
+        
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        code { font-family: "SFMono-Regular", Consolas, monospace; font-size: 13px; }
+        
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        
+        #head {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+        }
+        
+        #head .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        
+        #logo { font: bold 18px/1 monospace; color: var(--fg); }
+        #logo b { color: var(--orange); }
+        
+        #nav { display: flex; gap: 4px; flex-wrap: wrap; }
+        #nav a { color: var(--fg2); padding: 4px 10px; border-radius: 4px; font-size: 13px; }
+        #nav a:hover, #nav a.current { color: var(--fg); background: var(--bg3); text-decoration: none; }
+        
+        #notice {
+            background: rgba(210, 153, 34, 0.1);
+            border-bottom: 1px solid var(--border);
+            padding: 6px 0;
+            font-size: 12px;
+            color: var(--fg2);
+        }
+        #notice .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        #notice b { color: var(--orange); }
+        
+        main { padding: 24px 0; }
+        
+        #intro {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        #intro h1 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+        #intro p { color: var(--fg2); font-size: 13px; }
+        #intro .links { margin-top: 10px; font-size: 12px; }
+        #intro .links a { margin-right: 14px; }
+        
+        .section { margin-bottom: 28px; }
+        .section h2 {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--fg2);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section h2 a { float: right; font-weight: normal; text-transform: none; letter-spacing: 0; }
+        
+        .box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        .box h3 { font-size: 11px; font-weight: 600; margin-bottom: 8px; color: var(--fg2); }
+        .box ul { list-style: none; font-size: 12px; }
+        .box li { padding: 3px 0; }
+        .box li::before { content: "→ "; color: var(--fg3); }
+        
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        
+        .creator-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .creator-card:hover { border-color: var(--fg3); }
+        
+        /* Video thumbnail with click to play */
+        .video-thumb {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.2s;
+        }
+        
+        .video-thumb:hover img {
+            opacity: 0.85;
+        }
+        
+        /* YouTube play button style */
+        .video-thumb .yt-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px;
+            height: 48px;
+            background-color: rgba(255, 0, 0, 0.9);
+            border-radius: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .video-thumb:hover .yt-play {
+            background-color: #ff0000;
+        }
+        
+        .video-thumb .yt-play::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-35%, -50%);
+            border-style: solid;
+            border-width: 11px 0 11px 19px;
+            border-color: transparent transparent transparent #fff;
+        }
+        
+        /* When video is playing */
+        .video-thumb.playing {
+            cursor: default;
+        }
+        
+        .video-thumb iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .creator-card .info { padding: 12px; }
+        .creator-card .info h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .creator-card .info h3 a { color: var(--fg); }
+        .creator-card .info h3 a:hover { color: var(--link); }
+        .creator-card .handle { font-size: 11px; color: var(--fg3); margin-bottom: 8px; }
+        .creator-card .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+        .creator-card .tag { font-size: 10px; padding: 2px 6px; background: var(--bg3); border-radius: 3px; color: var(--fg2); }
+        .creator-card .actions { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; }
+        .creator-card .actions a {
+            color: var(--fg2);
+            padding: 4px 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        .creator-card .actions a:hover { border-color: var(--link); color: var(--link); text-decoration: none; }
+        .creator-card .pinned { font-size: 11px; color: var(--fg3); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+        .creator-card .pinned a { color: var(--orange); }
+        
+        .eco-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .eco-table td { padding: 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .eco-table tr:last-child td { border: none; }
+        .eco-table .name { font-weight: 600; width: 140px; }
+        .eco-table .name small { display: block; font-weight: normal; font-size: 10px; color: var(--fg3); margin-top: 2px; }
+        .eco-table .desc { color: var(--fg2); }
+        .eco-table .desc code { color: var(--green); font-size: 10px; background: var(--bg2); padding: 1px 4px; border-radius: 3px; }
+        .eco-table .links { text-align: right; white-space: nowrap; font-size: 11px; }
+        .eco-table .links a { margin-left: 8px; color: var(--fg2); }
+        .eco-table .links a:hover { color: var(--link); }
+        
+        .link-list { list-style: none; }
+        .link-list li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .link-list li:last-child { border: none; }
+        .link-list .meta { color: var(--fg3); font-size: 11px; }
+        .link-list small { display: block; color: var(--fg3); font-size: 11px; margin-top: 2px; }
+        
+        .news-item { padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .news-item:last-child { border: none; }
+        .news-item .tag { font: 10px/1 monospace; padding: 2px 5px; border-radius: 3px; text-transform: uppercase; margin-right: 6px; }
+        .tag-rust { background: rgba(210, 153, 34, 0.2); color: var(--orange); }
+        .tag-sol { background: rgba(63, 185, 80, 0.2); color: var(--green); }
+        .tag-dot { background: rgba(248, 81, 73, 0.2); color: var(--red); }
+        .news-item .title { font-size: 13px; }
+        .news-item .src { color: var(--fg3); font-size: 11px; margin-left: 4px; }
+        
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 0;
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--fg3);
+        }
+        footer a { color: var(--fg2); }
+        footer .disclaimer { background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 12px; margin-bottom: 16px; }
+        footer .disclaimer b { color: var(--orange); }
+        footer .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        
+        .green { color: var(--green); }
+        
+        /* News Carousel Styles */
+        .news-carousel-section {
+            margin: 12px 0 8px 0;
+        }
+        
+        .carousel-container {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+        
+        .carousel-slides {
+            display: flex;
+            gap: 12px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 60px;
+        }
+        
+        .carousel-slide {
+            flex: 0 0 calc(100% - 120px);
+            max-width: 100%;
+            opacity: 0.3;
+            transform: scale(0.94);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+            cursor: default;
+        }
+        
+        .slide-link {
+            display: block;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        
+        .slide-link:hover {
+            border-color: var(--link);
+            transform: translateY(-1px);
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+        
+        .slide-tag {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .tag-news { background: rgba(63, 185, 80, 0.2); color: var(--green); }
+        .tag-feature { background: rgba(210, 153, 34, 0.2); color: var(--orange); }
+        .tag-event { background: rgba(88, 166, 255, 0.2); color: var(--link); }
+        
+        .slide-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        
+        .slide-deck {
+            font-size: 13px;
+            color: var(--fg2);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .slide-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 11px;
+        }
+        
+        .slide-meta .date { color: var(--fg3); font-size: 10px; }
+        .slide-meta .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+        .slide-meta .tag { font-size: 9px; padding: 2px 6px; background: var(--bg3); border-radius: 3px; color: var(--fg3); }
+        
+        .carousel-nav {
+            display: none;
+        }
+        
+        .carousel-dots {
+            display: none;
+        }
+        
+        
+        @media (max-width: 900px) {
+            .carousel-slides { padding: 0 40px; }
+            .carousel-slide { flex: 0 0 calc(100% - 80px); }
+        }
+        
+        @media (max-width: 700px) {
+            .creators-grid { grid-template-columns: 1fr; }
+            .eco-table .links { display: none; }
+            .carousel-slides { padding: 0 20px; gap: 8px; }
+            .carousel-slide { flex: 0 0 calc(100% - 40px); }
+            .slide-link { padding: 12px 16px; }
+            .slide-title { font-size: 15px; }
+            .slide-deck { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="head">
+    <div class="wrap">
+        <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+        <nav id="nav">
+            <a href="/learn">learn</a>
+            <a href="/creators">creators</a>
+            <a href="/ecosystems">ecosystems</a>
+            <a href="/news">news</a>
+            <a href="/tools">tools</a>
+            <a href="/events">events</a>
+        </nav>
+    </div>
+</header>
+
+<!--
+<div id="notice">
+    <div class="wrap">
+        <span><b>community portal</b> — not affiliated with rust foundation</span>
+        <a href="https://foundation.rust-lang.org/policies/logo-policy-and-media-guide/" target="_blank" rel="noopener">trademark info</a>
+    </div>
+</div>
+-->
+
+<main>
+<div class="wrap">
+
+<div id="intro">
+    <h1>learn rust. build anything.</h1>
+    <p>community-curated resources for learning Rust — from fundamentals to systems programming to blockchain. Rust first, everything else second.</p>
+    <div class="links">
+        <a href="https://www.rust-lang.org/" target="_blank" rel="noopener">rust-lang.org</a>
+        <a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener">the book</a>
+        <a href="https://crates.io/" target="_blank" rel="noopener">crates.io</a>
+        <a href="https://docs.rs/" target="_blank" rel="noopener">docs.rs</a>
+        <a href="https://this-week-in-rust.org/" target="_blank" rel="noopener">this week in rust</a>
+    </div>
+</div>
+
+<!-- News/Events Carousel Preview -->
+<div class="news-carousel-section">
+    <div class="carousel-container">
+        <!-- Carousel slides - TEMPLATE LOOP -->
+        <!-- Backend injects: carousel_items array from JSON -->
+        <div class="carousel-slides">
+            {{#each carousel_items}}
+            <div class="carousel-slide {{#if @first}}active{{/if}}" data-index="{{@index}}">
+                <a href="/{{this.type}}/{{this.slug}}" class="slide-link">
+                    <div class="slide-content">
+                        <div class="slide-tag tag-{{this.kind}}">{{this.kind}}</div>
+                        <h3 class="slide-title">{{this.title}}</h3>
+                        <p class="slide-deck">{{this.deck}}</p>
+                        <div class="slide-meta">
+                            <span class="date">Published: {{this.published_on}}</span>
+                            <div class="tags">
+                                {{#each this.tags}}
+                                <span class="tag">{{this}}</span>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+        </div>
+        
+        <!-- Navigation arrows -->
+        <button class="carousel-nav carousel-prev" aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="carousel-nav carousel-next" aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        
+    </div>
+</div>
+
+<!-- 1. Learn Rust FIRST -->
+<div class="section" id="learn">
+    <h2>learn rust</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        <div class="box">
+            <h3>start here (official)</h3>
+            <ul>
+                <li><a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener">The Rust Book</a></li>
+                <li><a href="https://doc.rust-lang.org/rust-by-example/" target="_blank" rel="noopener">Rust by Example</a></li>
+                <li><a href="https://www.rust-lang.org/learn" target="_blank" rel="noopener">rust-lang.org/learn</a></li>
+                <li><a href="https://github.com/rust-lang/rustlings" target="_blank" rel="noopener">Rustlings exercises</a></li>
+            </ul>
+        </div>
+        <div class="box">
+            <h3>core concepts</h3>
+            <ul>
+                <li>ownership + borrowing</li>
+                <li>lifetimes</li>
+                <li>error handling (Result)</li>
+                <li>traits + generics</li>
+                <li>async rust</li>
+            </ul>
+        </div>
+        <div class="box">
+            <h3>advanced topics</h3>
+            <ul>
+                <li>unsafe rust</li>
+                <li>macros</li>
+                <li>FFI + C interop</li>
+                <li>wasm compilation</li>
+                <li>embedded systems</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Creators with click-to-play -->
+<div class="section" id="creators">
+    <h2>rust creators — watch & learn <a href="/creators">view all →</a></h2>
+    <p style="font-size: 12px; color: var(--fg2); margin-bottom: 16px;">click thumbnail to play video</p>
+    
+    <div class="creators-grid">
+        
+        <!-- Let's Get Rusty -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="5C_HPTJg5ek">
+                <img src="https://i.ytimg.com/vi/5C_HPTJg5ek/hqdefault.jpg" alt="Let's Get Rusty">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="/creators/lets-get-rusty">Let's Get Rusty</a></h3>
+                <div class="handle">@letsgetrusty</div>
+                <div class="tags"><span class="tag">beginner</span><span class="tag">tutorials</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@letsgetrusty/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                    <a href="https://www.youtube.com/@letsgetrusty/playlists" target="_blank" rel="noopener">Playlists ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Jon Gjengset -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="rAl-9HwD858">
+                <img src="https://i.ytimg.com/vi/rAl-9HwD858/hqdefault.jpg" alt="Jon Gjengset">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="/creators/jon-gjengset">Jon Gjengset</a></h3>
+                <div class="handle">@jonhoo</div>
+                <div class="tags"><span class="tag">intermediate</span><span class="tag">advanced</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@jonhoo/videos" target="_blank" rel="noopener">Videos ↗</a>
+                    <a href="https://www.youtube.com/playlist?list=PLqbS7AVVErFiWDOAVrPt7aYmnuuOLYvOa" target="_blank" rel="noopener">Crust of Rust ↗</a>
+                </div>
+                <div class="pinned">📌 <a href="https://www.youtube.com/playlist?list=PLqbS7AVVErFiWDOAVrPt7aYmnuuOLYvOa" target="_blank" rel="noopener">Crust of Rust playlist</a></div>
+            </div>
+        </div>
+        
+        <!-- No Boilerplate -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="CJtvnepMVAU">
+                <img src="https://i.ytimg.com/vi/CJtvnepMVAU/hqdefault.jpg" alt="No Boilerplate">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@NoBoilerplate" target="_blank" rel="noopener">No Boilerplate</a></h3>
+                <div class="handle">@NoBoilerplate</div>
+                <div class="tags"><span class="tag">fast-paced</span><span class="tag">ideas</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@NoBoilerplate/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ryan Levick -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="WnWGO-tLtLA">
+                <img src="https://i.ytimg.com/vi/WnWGO-tLtLA/hqdefault.jpg" alt="Ryan Levick">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@RyanLevicksVideos" target="_blank" rel="noopener">Ryan Levick</a></h3>
+                <div class="handle">@RyanLevicksVideos</div>
+                <div class="tags"><span class="tag">talks</span><span class="tag">practical</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@RyanLevicksVideos/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- fasterthanlime -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="kGXnxnDIPb4">
+                <img src="https://i.ytimg.com/vi/0mqFCqw_XvI/maxresdefault.jpg" alt="fasterthanlime">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@fasterthanlime" target="_blank" rel="noopener">fasterthanlime</a></h3>
+                <div class="handle">@fasterthanlime</div>
+                <div class="tags"><span class="tag">deep-dives</span><span class="tag">systems</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@fasterthanlime/videos" target="_blank" rel="noopener">Videos ↗</a>
+                    <a href="https://fasterthanli.me/" target="_blank" rel="noopener">Blog ↗</a>
+                </div>
+                <div class="pinned">📌 <a href="https://fasterthanli.me/" target="_blank" rel="noopener">fasterthanli.me</a></div>
+            </div>
+        </div>
+        
+        <!-- Rustacean Station -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="s5S2Ed5T-dc">
+                <img src="https://i.ytimg.com/vi/s5S2Ed5T-dc/hqdefault.jpg" alt="Rustacean Station">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@rustaceanfm" target="_blank" rel="noopener">Rustacean Station</a></h3>
+                <div class="handle">@rustaceanfm</div>
+                <div class="tags"><span class="tag">podcast</span><span class="tag">interviews</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@rustaceanfm/videos" target="_blank" rel="noopener">Episodes ↗</a>
+                    <a href="https://rustacean-station.org/" target="_blank" rel="noopener">Website ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chris Biscardi -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="TJTDTyNdJdY">
+                <img src="https://i.ytimg.com/vi/TJTDTyNdJdY/hqdefault.jpg" alt="Chris Biscardi">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@chrisbiscardi" target="_blank" rel="noopener">Chris Biscardi</a></h3>
+                <div class="handle">@chrisbiscardi</div>
+                <div class="tags"><span class="tag">bevy</span><span class="tag">gamedev</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@chrisbiscardi/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Jeremy Chone -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="XZtlD_m59sM">
+                <img src="https://i.ytimg.com/vi/XZtlD_m59sM/hqdefault.jpg" alt="Jeremy Chone">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@JeremyChone" target="_blank" rel="noopener">Jeremy Chone</a></h3>
+                <div class="handle">@JeremyChone</div>
+                <div class="tags"><span class="tag">production</span><span class="tag">backend</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@JeremyChone/videos" target="_blank" rel="noopener">Videos ↗</a>
+                    <a href="https://jeremychone.com/" target="_blank" rel="noopener">Website ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- RustVideos -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="Z3xPIYHKSoI">
+                <img src="https://i.ytimg.com/vi/Z3xPIYHKSoI/hqdefault.jpg" alt="RustVideos">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@RustVideos" target="_blank" rel="noopener">RustVideos</a></h3>
+                <div class="handle">@RustVideos</div>
+                <div class="tags"><span class="tag">conferences</span><span class="tag">talks</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@RustVideos/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- YouCodeThings -->
+        <div class="creator-card">
+            <div class="video-thumb" data-id="T_KrYLW4jw8">
+                <img src="https://i.ytimg.com/vi/T_KrYLW4jw8/hqdefault.jpg" alt="YouCodeThings">
+                <div class="yt-play"></div>
+            </div>
+            <div class="info">
+                <h3><a href="https://www.youtube.com/@YouCodeThings" target="_blank" rel="noopener">YouCodeThings</a></h3>
+                <div class="handle">@YouCodeThings</div>
+                <div class="tags"><span class="tag">projects</span><span class="tag">learning</span></div>
+                <div class="actions">
+                    <a href="https://www.youtube.com/@YouCodeThings/videos" target="_blank" rel="noopener">All Videos ↗</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- 3. Ecosystems -->
+<div class="section" id="ecosystems">
+    <h2>rust in blockchain <a href="/ecosystems">view all →</a></h2>
+    <p style="font-size: 12px; color: var(--fg2); margin-bottom: 12px;">apply your rust skills in web3</p>
+    <table class="eco-table">
+        <tr>
+            <td class="name"><a href="/ecosystems/solana">Solana</a><small>programs</small></td>
+            <td class="desc"><code>anchor</code> <code>solana-sdk</code></td>
+            <td class="links">
+                <a href="https://solana.com/developers" target="_blank" rel="noopener">portal</a>
+                <a href="https://www.anchor-lang.com/" target="_blank" rel="noopener">anchor</a>
+                <a href="https://solana.com/developers/cookbook" target="_blank" rel="noopener">cookbook</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/polkadot-substrate">Polkadot</a><small>parachains</small></td>
+            <td class="desc"><code>ink!</code> <code>substrate</code></td>
+            <td class="links">
+                <a href="https://docs.polkadot.com/" target="_blank" rel="noopener">docs</a>
+                <a href="https://use.ink/" target="_blank" rel="noopener">ink!</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/cosmos-cosmwasm">CosmWasm</a><small>contracts</small></td>
+            <td class="desc"><code>cosmwasm-std</code></td>
+            <td class="links">
+                <a href="https://docs.cosmwasm.com/" target="_blank" rel="noopener">docs</a>
+                <a href="https://github.com/CosmWasm/awesome-cosmwasm" target="_blank" rel="noopener">awesome</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/near">NEAR</a><small>contracts</small></td>
+            <td class="desc"><code>near-sdk-rs</code></td>
+            <td class="links">
+                <a href="https://docs.near.org/build/smart-contracts/anatomy" target="_blank" rel="noopener">docs</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/stellar-soroban">Soroban</a><small>stellar</small></td>
+            <td class="desc"><code>soroban-sdk</code></td>
+            <td class="links">
+                <a href="https://developers.stellar.org/docs/build/smart-contracts/overview" target="_blank" rel="noopener">docs</a>
+                <a href="https://docs.rs/soroban-sdk" target="_blank" rel="noopener">sdk</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/arbitrum-stylus">Stylus</a><small>arbitrum</small></td>
+            <td class="desc"><code>stylus-sdk</code></td>
+            <td class="links">
+                <a href="https://docs.arbitrum.io/stylus/quickstart" target="_blank" rel="noopener">start</a>
+                <a href="https://github.com/OffchainLabs/stylus-tutorials" target="_blank" rel="noopener">tutorials</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a href="/ecosystems/ethereum-rust">Eth/BTC</a><small>infra</small></td>
+            <td class="desc"><code>reth</code> <code>alloy</code> <code>lighthouse</code></td>
+            <td class="links">
+                <a href="https://reth.rs/" target="_blank" rel="noopener">reth</a>
+                <a href="https://alloy.rs/" target="_blank" rel="noopener">alloy</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- 4. News -->
+<div class="section" id="news">
+    <h2>rust news <a href="/news">view all →</a></h2>
+    <div class="news-item">
+        <span class="tag tag-rust">rust</span>
+        <a href="https://blog.rust-lang.org/" target="_blank" rel="noopener" class="title">Rust Blog — official releases</a>
+        <span class="src">blog.rust-lang.org</span>
+    </div>
+    <div class="news-item">
+        <span class="tag tag-rust">rust</span>
+        <a href="https://blog.rust-lang.org/inside-rust/" target="_blank" rel="noopener" class="title">Inside Rust — RFCs, internals</a>
+        <span class="src">inside-rust</span>
+    </div>
+    <div class="news-item">
+        <span class="tag tag-rust">rust</span>
+        <a href="https://this-week-in-rust.org/" target="_blank" rel="noopener" class="title">This Week in Rust — weekly newsletter</a>
+        <span class="src">this-week-in-rust.org</span>
+    </div>
+    <div class="news-item">
+        <span class="tag tag-sol">sol</span>
+        <a href="https://solana.com/news" target="_blank" rel="noopener" class="title">Solana News</a>
+        <span class="src">solana.com</span>
+    </div>
+    <div class="news-item">
+        <span class="tag tag-dot">dot</span>
+        <a href="https://www.parity.io/blog/category/substrate" target="_blank" rel="noopener" class="title">Parity Blog — substrate + ink!</a>
+        <span class="src">parity.io</span>
+    </div>
+</div>
+
+<!-- 5. Tools -->
+<div class="section" id="tools">
+    <h2>rust crates + tools <a href="/tools">view all →</a></h2>
+    <ul class="link-list">
+        <li><a href="/tools/anchor">anchor</a> <span class="meta">— solana programs</span><small><code class="green">anchor-lang</code></small></li>
+        <li><a href="/tools/ink">ink!</a> <span class="meta">— polkadot contracts</span><small><code class="green">ink</code></small></li>
+        <li><a href="/tools/reth">reth</a> <span class="meta">— eth execution client</span><small><code class="green">reth</code></small></li>
+        <li><a href="/tools/alloy">alloy</a> <span class="meta">— evm toolkit</span><small><code class="green">alloy</code></small></li>
+        <li><a href="/tools/lighthouse">lighthouse</a> <span class="meta">— eth consensus</span><small><code class="green">lighthouse</code></small></li>
+        <li><a href="/tools/rust-bitcoin">rust-bitcoin</a> <span class="meta">— bitcoin primitives</span><small><code class="green">bitcoin</code></small></li>
+        <li><a href="/tools/ldk">LDK</a> <span class="meta">— lightning network</span><small><code class="green">lightning</code></small></li>
+    </ul>
+</div>
+
+</div>
+</main>
+
+<footer>
+    <div class="wrap">
+        <div class="disclaimer">
+            <b>disclaimer:</b> rust.dev is community-run, <b>not affiliated</b> with rust foundation or any blockchain. 
+            "rust" is a trademark of its owners. <a href="https://foundation.rust-lang.org/policies/logo-policy-and-media-guide/" target="_blank" rel="noopener">trademark policy</a>
+        </div>
+        <div class="bottom">
+            <div>
+                <a href="https://www.rust-lang.org/" target="_blank" rel="noopener">rust-lang.org</a> · 
+                <a href="https://crates.io/" target="_blank" rel="noopener">crates.io</a> · 
+                <a href="https://docs.rs/" target="_blank" rel="noopener">docs.rs</a>
+            </div>
+            <div>community project</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Click to play - using exact same iframe format as truefun.html
+document.querySelectorAll('.video-thumb').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+        var videoId = this.getAttribute('data-id');
+        if (!videoId || this.classList.contains('playing')) return;
+        
+        // Create iframe exactly like truefun.html
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1&autoplay=1';
+        iframe.title = 'YouTube video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        
+        // Replace thumbnail with iframe
+        this.innerHTML = '';
+        this.appendChild(iframe);
+        this.classList.add('playing');
+    });
+});
+
+// News Carousel with Slide Peek Effect
+(function() {
+    const carousel = {
+        currentIndex: 0,
+        totalSlides: 0,
+        autoPlayInterval: null,
+        autoPlayDelay: 7000,
+        
+        init: function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            this.totalSlides = slides.length;
+            
+            if (this.totalSlides === 0) return;
+            
+            // Click on any slide to navigate to it
+            slides.forEach((slide, index) => {
+                slide.addEventListener('click', (e) => {
+                    if (!slide.classList.contains('active')) {
+                        e.preventDefault();
+                        this.goTo(index);
+                    }
+                });
+            });
+            
+            // Update position
+            this.updatePosition();
+            
+            // Start auto-play
+            this.startAutoPlay();
+            
+            // Pause on hover
+            const container = document.querySelector('.carousel-container');
+            if (container) {
+                container.addEventListener('mouseenter', () => this.stopAutoPlay());
+                container.addEventListener('mouseleave', () => this.startAutoPlay());
+            }
+        },
+        
+        updatePosition: function() {
+            const slidesContainer = document.querySelector('.carousel-slides');
+            const slides = document.querySelectorAll('.carousel-slide');
+            
+            // Update active class
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === this.currentIndex);
+            });
+            
+            // Calculate offset to center current slide
+            const slideWidth = slides[0]?.offsetWidth || 700;
+            const gap = 16;
+            const offset = -this.currentIndex * (slideWidth + gap);
+            
+            slidesContainer.style.transform = `translateX(${offset}px)`;
+        },
+        
+        goTo: function(index) {
+            this.currentIndex = index;
+            this.updatePosition();
+            this.resetAutoPlay();
+        },
+        
+        next: function() {
+            const nextIndex = (this.currentIndex + 1) % this.totalSlides;
+            this.goTo(nextIndex);
+        },
+        
+        prev: function() {
+            const prevIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+            this.goTo(prevIndex);
+        },
+        
+        startAutoPlay: function() {
+            this.stopAutoPlay();
+            this.autoPlayInterval = setInterval(() => this.next(), this.autoPlayDelay);
+        },
+        
+        stopAutoPlay: function() {
+            if (this.autoPlayInterval) {
+                clearInterval(this.autoPlayInterval);
+                this.autoPlayInterval = null;
+            }
+        },
+        
+        resetAutoPlay: function() {
+            this.startAutoPlay();
+        }
+    };
+    
+    carousel.init();
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') carousel.prev();
+        if (e.key === 'ArrowRight') carousel.next();
+    });
+    
+    // Recalculate on resize
+    window.addEventListener('resize', () => carousel.updatePosition());
+})();
+</script>
+
+</body>
+</html>

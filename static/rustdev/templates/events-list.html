@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events — rust.dev</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --fg: #c9d1d9; --fg2: #8b949e; --fg3: #6e7681; --link: #58a6ff; --orange: #d29922; --green: #3fb950; --border: #30363d; }
+        html { height: 100%; }
+        body { font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); min-height: 100%; display: flex; flex-direction: column; }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        #head { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 0; }
+        #head .wrap { display: flex; align-items: center; gap: 24px; }
+        #logo { font: bold 18px/1 monospace; color: var(--fg); }
+        #logo b { color: var(--orange); }
+        .back { color: var(--fg2); font-size: 13px; }
+        main { padding: 32px 0; flex: 1; }
+        .intro { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .intro h1 { font-size: 24px; margin-bottom: 8px; }
+        .intro p { color: var(--fg2); font-size: 14px; margin-bottom: 12px; }
+        .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+        .filter-tab { font-size: 12px; padding: 6px 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--fg2); cursor: pointer; transition: all 0.2s; }
+        .filter-tab:hover { border-color: var(--link); color: var(--link); }
+        .filter-tab.active { background: var(--bg3); border-color: var(--orange); color: var(--orange); }
+        .event-card.hidden { display: none; }
+        .teaser { font-size: 12px; color: var(--fg2); font-style: italic; margin: 4px 0; }
+        .section { margin-bottom: 32px; }
+        .section h2 { font-size: 16px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .event-list { display: grid; gap: 12px; }
+        .event-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; transition: all 0.2s; }
+        .event-card:hover { border-color: var(--link); transform: translateX(4px); }
+        .event-card .info { flex: 1; min-width: 250px; display: flex; align-items: center; gap: 12px; }
+        .event-icon { width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; }
+        .event-card h3 { font-size: 15px; margin-bottom: 4px; }
+        .event-card h3 a { color: var(--fg); }
+        .event-card h3 a:hover { color: var(--link); }
+        .event-card .meta { font-size: 12px; color: var(--fg3); }
+        .event-card .status { font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; font-weight: 600; }
+        .status-upcoming { background: rgba(63, 185, 80, 0.2); color: var(--green); }
+        .status-past { background: rgba(110, 118, 129, 0.2); color: var(--fg3); }
+        footer { border-top: 1px solid var(--border); padding: 16px 0; margin-top: 32px; font-size: 12px; color: var(--fg3); text-align: center; }
+    </style>
+</head>
+<body>
+<header id="head">
+    <div class="wrap">
+        <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+        <a href="/" class="back">← back to home</a>
+    </div>
+</header>
+<main>
+<div class="wrap">
+<div class="intro">
+    <h1>Rust & Crypto Events</h1>
+    <p>Major Rust and Rust-in-crypto gatherings.</p>
+    
+    {{#if labels}}
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-label="all">All</button>
+        {{#each labels}}
+        <button class="filter-tab" data-label="{{this.slug}}">{{this.name}}</button>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>
+
+<div class="section">
+    <h2>Upcoming Events</h2>
+    <div class="event-list">
+        {{#each upcoming}}
+        <div class="event-card" data-tags="{{#each this.tags}}{{this}}{{#unless @last}},{{/unless}}{{/each}}" data-primary="{{this.primary_label}}">
+            <div class="info">
+                {{#if this.media.logo_url}}
+                <img src="{{this.media.logo_url}}" alt="{{this.title}}" class="event-icon">
+                {{/if}}
+                <div>
+                    <h3><a href="/events/{{this.slug}}">{{this.title}}</a></h3>
+                    {{#if this.teaser}}
+                    <p class="teaser">{{this.teaser}}</p>
+                    {{/if}}
+                    <p class="meta">{{this.starts_on}}{{#if this.ends_on}} to {{this.ends_on}}{{/if}} · {{this.location}}</p>
+                </div>
+            </div>
+            <span class="status status-upcoming">{{this.status}}</span>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+{{#if past}}
+<div class="section">
+    <h2>Past Events</h2>
+    <div class="event-list">
+        {{#each past}}
+        <div class="event-card" data-tags="{{#each this.tags}}{{this}}{{#unless @last}},{{/unless}}{{/each}}" data-primary="{{this.primary_label}}">
+            <div class="info">
+                {{#if this.media.logo_url}}
+                <img src="{{this.media.logo_url}}" alt="{{this.title}}" class="event-icon">
+                {{/if}}
+                <div>
+                    <h3><a href="/events/{{this.slug}}">{{this.title}}</a></h3>
+                    <p class="meta">{{this.starts_on}}{{#if this.ends_on}} to {{this.ends_on}}{{/if}} · {{this.location}}</p>
+                </div>
+            </div>
+            <span class="status status-past">{{this.status}}</span>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/if}}
+
+</div>
+</main>
+<footer>
+    <div class="wrap">
+        <a href="/">rust.dev</a> — community-curated rust resources
+    </div>
+</footer>
+
+<script>
+// Universal tag-based filtering
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.event-card');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const selectedLabel = this.getAttribute('data-label');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            cards.forEach(card => {
+                if (selectedLabel === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    const tags = card.getAttribute('data-tags');
+                    const primary = card.getAttribute('data-primary');
+                    
+                    if ((tags && tags.includes(selectedLabel)) || primary === selectedLabel) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>
+

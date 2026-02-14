@@ -1,2 +1,3 @@
-# rustdev
-rust.dev
+# rust.dev
+
+Minimal rust.dev website server.
