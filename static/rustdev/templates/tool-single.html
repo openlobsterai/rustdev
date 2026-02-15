@@ -48,6 +48,18 @@
         .video-caption { font-size: 13px; color: var(--fg2); font-style: italic; margin-top: 8px; }
         .twitter-container { max-width: 550px; margin: 0 auto; }
         footer { border-top: 1px solid var(--border); padding: 16px 0; margin-top: 32px; font-size: 12px; color: var(--fg3); text-align: center; }
+        /* 🦞 OpenLobster orchestration */
+        .lobster-notice { background: linear-gradient(90deg, rgba(230,57,70,.06) 0%, rgba(210,153,34,.06) 100%); border-bottom: 1px solid rgba(230,57,70,.12); padding: 6px 0; font-size: 12px; color: var(--fg2); }
+        .lobster-notice .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .lobster-notice b { color: #e63946; }
+        .lobster-notice a { color: #ff6b6b; }
+        .lobster-notice a:hover { color: #ff8c61; }
+        .lobster-badge { font-size: 11px; padding: 2px 10px; background: rgba(230,57,70,.08); border: 1px solid rgba(230,57,70,.15); border-radius: 100px; white-space: nowrap; }
+        .lobster-badge:hover { text-decoration: none !important; background: rgba(230,57,70,.15); }
+        .lobster-ft { background: rgba(230,57,70,.04); border: 1px solid rgba(230,57,70,.1); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .lobster-ft a { color: #ff6b6b; }
+        .lobster-ft a:hover { color: #ff8c61; }
+        .lobster-ft-sub { font-size: 10px; color: var(--fg3); }
     </style>
 </head>
 <body>
@@ -57,6 +69,12 @@
         <a href="/tools" class="back">← back to tools</a>
     </div>
 </header>
+<div class="lobster-notice">
+    <div class="wrap">
+        <span>🦀 × 🦞 <b>this site ships itself</b> — orchestrated, deployed &amp; posted by <a href="https://openlobster.ai" target="_blank" rel="noopener">OpenLobster.ai</a></span>
+        <a href="https://openlobster.ai" target="_blank" rel="noopener" class="lobster-badge">how it works →</a>
+    </div>
+</div>
 <main>
 <div class="wrap">
 <div class="hero" {{#if media.background_url}}style="background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.98)), url('{{media.background_url}}'); background-size: cover; background-position: center; border-radius: 8px; padding: 24px;"{{/if}}>
@@ -99,7 +117,14 @@
 </main>
 <footer>
     <div class="wrap">
-        <a href="/">rust.dev</a> — community-curated rust resources
+        <div class="lobster-ft">
+            <span style="font-size:18px">🦞</span>
+            <div>
+                <div style="font-size:12px;font-weight:600">Autonomously operated by <a href="https://openlobster.ai" target="_blank" rel="noopener">OpenLobster.ai</a></div>
+                <div class="lobster-ft-sub">Orchestrated by LobsterAgent + DevClaw</div>
+            </div>
+        </div>
+        <a href="/">rust.dev</a> — 🦀 × 🦞
     </div>
 </footer>
 </body>

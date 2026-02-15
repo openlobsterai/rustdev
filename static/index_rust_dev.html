@@ -231,6 +231,20 @@
         footer .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         
         .green { color: var(--green); }
+        /* 🦞 OpenLobster orchestration */
+        .lobster-notice { background: linear-gradient(90deg, rgba(230,57,70,.06) 0%, rgba(210,153,34,.06) 100%); border-bottom: 1px solid rgba(230,57,70,.12); }
+        .lobster-notice b { color: #e63946; }
+        .lobster-notice a { color: #ff6b6b; }
+        .lobster-notice a:hover { color: #ff8c61; }
+        .lobster-badge { font-size: 11px; padding: 2px 10px; background: rgba(230,57,70,.08); border: 1px solid rgba(230,57,70,.15); border-radius: 100px; white-space: nowrap; }
+        .lobster-badge:hover { text-decoration: none !important; background: rgba(230,57,70,.15); }
+        .lobster-footer { background: rgba(230,57,70,.04); border: 1px solid rgba(230,57,70,.1); border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+        .lobster-footer-inner { display: flex; align-items: center; gap: 12px; }
+        .lobster-footer-icon { font-size: 24px; flex-shrink: 0; }
+        .lobster-footer-title { font-size: 13px; font-weight: 600; color: var(--fg); }
+        .lobster-footer-title a { color: #ff6b6b; }
+        .lobster-footer-title a:hover { color: #ff8c61; }
+        .lobster-footer-sub { font-size: 11px; color: var(--fg3); margin-top: 2px; }
         
         /* News Carousel Styles */
         .news-carousel-section {
@@ -369,14 +383,12 @@
     </div>
 </header>
 
-<!--
-<div id="notice">
+<div id="notice" class="lobster-notice">
     <div class="wrap">
-        <span><b>community portal</b> — not affiliated with rust foundation</span>
-        <a href="https://foundation.rust-lang.org/policies/logo-policy-and-media-guide/" target="_blank" rel="noopener">trademark info</a>
+        <span>🦀 × 🦞 <b>this site ships itself</b> — orchestrated, deployed &amp; posted by <a href="https://openlobster.ai" target="_blank" rel="noopener">OpenLobster.ai</a></span>
+        <a href="https://openlobster.ai" target="_blank" rel="noopener" class="lobster-badge">how it works →</a>
     </div>
 </div>
--->
 
 <main>
 <div class="wrap">
@@ -401,7 +413,7 @@
         <div class="carousel-slides">
             {{#each carousel_items}}
             <div class="carousel-slide {{#if @first}}active{{/if}}" data-index="{{@index}}">
-                <a href="/{{this.type}}/{{this.slug}}" class="slide-link">
+                <a href="{{#if this.href}}{{this.href}}{{else}}/{{this.type}}/{{this.slug}}{{/if}}" {{#if this.href}}target="_blank" rel="noopener"{{/if}} class="slide-link">
                     <div class="slide-content">
                         <div class="slide-tag tag-{{this.kind}}">{{this.kind}}</div>
                         <h3 class="slide-title">{{this.title}}</h3>
@@ -765,13 +777,22 @@
             <b>disclaimer:</b> rust.dev is community-run, <b>not affiliated</b> with rust foundation or any blockchain. 
             "rust" is a trademark of its owners. <a href="https://foundation.rust-lang.org/policies/logo-policy-and-media-guide/" target="_blank" rel="noopener">trademark policy</a>
         </div>
+        <div class="lobster-footer">
+            <div class="lobster-footer-inner">
+                <span class="lobster-footer-icon">🦞</span>
+                <div>
+                    <div class="lobster-footer-title">Autonomously operated by <a href="https://openlobster.ai" target="_blank" rel="noopener">OpenLobster.ai</a></div>
+                    <div class="lobster-footer-sub">Content curation · deployment · social posting — orchestrated by LobsterAgent + DevClaw</div>
+                </div>
+            </div>
+        </div>
         <div class="bottom">
             <div>
                 <a href="https://www.rust-lang.org/" target="_blank" rel="noopener">rust-lang.org</a> · 
                 <a href="https://crates.io/" target="_blank" rel="noopener">crates.io</a> · 
                 <a href="https://docs.rs/" target="_blank" rel="noopener">docs.rs</a>
             </div>
-            <div>community project</div>
+            <div>🦀 × 🦞</div>
         </div>
     </div>
 </footer>

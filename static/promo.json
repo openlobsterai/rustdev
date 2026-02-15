@@ -1,4 +1,14 @@
 {
-  "slides": []
+  "slides": [
+    {
+      "type": "news",
+      "slug": "openlobster-orchestration",
+      "kind": "feature",
+      "title": "rust.dev is now autonomously operated by OpenLobster.ai",
+      "deck": "Content curation, deployments, and social posts — all orchestrated by LobsterAgent with DevClaw and ContentClaw. The crab got claws. 🦀 × 🦞",
+      "published_on": "2026-02-15",
+      "tags": ["openlobster", "automation", "ai-agents"],
+      "href": "https://openlobster.ai"
+    }
+  ]
 }
-

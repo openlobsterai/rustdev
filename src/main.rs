@@ -891,13 +891,14 @@ fn promo_slide_to_value(slide: &PromoSlide) -> Value {
 }
 
 fn build_carousel_items(promo: &PromoContent, rustdev: &RustDevContent) -> Vec<Value> {
-    if !promo.slides.is_empty() {
-        return promo.slides.iter().map(promo_slide_to_value).collect();
-    }
-
     let mut items = Vec::new();
 
-    // Use latest news first.
+    // Promo slides go first (pinned to top of carousel).
+    for slide in &promo.slides {
+        items.push(promo_slide_to_value(slide));
+    }
+
+    // Then latest news.
     for post in rustdev.posts.iter().take(4) {
         items.push(json!({
             "type": "news",
