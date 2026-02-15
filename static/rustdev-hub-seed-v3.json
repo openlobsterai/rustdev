@@ -1947,7 +1947,7 @@
       "status": "upcoming",
       "starts_on": "2026-03-19",
       "ends_on": "2026-03-20",
-      "location": "Warsaw, Poland",
+      "location": "POLIN Conference Centre, Warsaw, Poland",
       "tags": [
         "community",
         "conference",
@@ -1955,23 +1955,23 @@
         "event",
         "rust"
       ],
-      "url": "https://rustikon.dev/",
+      "url": "https://www.rustikon.dev/",
       "why_it_matters": "Newer Rust conference in Europe; great for discovering emerging talks and maintainers.",
       "about": "Rustikon focuses on practical and advanced Rust topics with a strong European community presence.",
       "featured_media": {
         "article": {
-          "title": "Rustikon 2026 details",
-          "url": "https://rustikon.dev/"
+          "title": "Rustikon 2026",
+          "url": "https://www.rustikon.dev/"
         }
       },
       "sources": [
-        "https://rustikon.dev/"
+        "https://www.rustikon.dev/"
       ],
       "media": {
-        "background_url": "https://image.thum.io/get/width/1200/https://rustikon.dev/",
-        "card_url": "https://image.thum.io/get/width/1200/https://rustikon.dev/",
-        "teaser_thumb_url": "https://image.thum.io/get/width/1200/https://rustikon.dev/",
-        "logo_url": "https://logo.clearbit.com/rustikon.dev"
+        "logo_url": "https://cdn.prod.website-files.com/689311ec13a09c0c1e1887f8/689311ec13a09c0c1e188978_favicon%20rustikon.png",
+        "background_url": "https://cdn.prod.website-files.com/66d03a23518748fa736df4e7/6751a33d0da33e122e838de4_Social%20Media%20TEMPLATES%20(1).jpg",
+        "card_url": "https://cdn.prod.website-files.com/66d03a23518748fa736df4e7/6751a33d0da33e122e838de4_Social%20Media%20TEMPLATES%20(1).jpg",
+        "teaser_thumb_url": "https://cdn.prod.website-files.com/66d03a23518748fa736df4e7/6751a33d0da33e122e838de4_Social%20Media%20TEMPLATES%20(1).jpg"
       },
       "labels": [
         "core"
@@ -1980,8 +1980,69 @@
       "teaser": "Newer Rust conference in Europe; great for discovering emerging talks and maintainers.",
       "schedule_note": "Dates confirmed \u2014 see the official event page for schedule, tickets, and CFP updates.",
       "updates": {
-        "site": "https://rustikon.dev/",
-        "schedule": "https://rustikon.dev/"
+        "site": "https://www.rustikon.dev/",
+        "schedule": "https://www.rustikon.dev/"
+      },
+      "links": {
+        "site": "https://www.rustikon.dev/",
+        "x": "https://x.com/rustikonconf",
+        "linkedin": "https://www.linkedin.com/showcase/rustikon/",
+        "mastodon": "https://mastodon.social/@Rustikon"
+      }
+    },
+    {
+      "slug": "rust-in-paris-2026",
+      "title": "Rust in Paris 2026",
+      "status": "upcoming",
+      "starts_on": "2026-03-27",
+      "ends_on": "2026-03-27",
+      "location": "Paris, France + Online",
+      "tags": [
+        "community",
+        "conference",
+        "core",
+        "event",
+        "rust"
+      ],
+      "url": "https://www.rustinparis.com/",
+      "why_it_matters": "High-signal EU Rust community conference with talk archives and strong networking.",
+      "links": {
+        "site": "https://www.rustinparis.com/",
+        "tickets": "https://ti.to/xperhub/rust-in-paris-2026",
+        "x": "https://x.com/rustparis",
+        "youtube": "https://www.youtube.com/@rustinparis",
+        "linkedin": "https://www.linkedin.com/company/rustinparis",
+        "mastodon": "https://mastodon.social/@rustinparis",
+        "bsky": "https://bsky.app/profile/rustinparis.bsky.social"
+      },
+      "about": "Rust in Paris is a community conference for developers passionate about building secure, concurrent, high-performing software with Rust.",
+      "featured_media": {
+        "article": {
+          "title": "Rust in Paris 2026 tickets",
+          "url": "https://ti.to/xperhub/rust-in-paris-2026"
+        }
+      },
+      "sources": [
+        "https://www.rustinparis.com/",
+        "https://ti.to/xperhub/rust-in-paris-2026",
+        "https://x.com/rustparis",
+        "https://www.youtube.com/@rustinparis"
+      ],
+      "media": {
+        "logo_url": "https://cdn.prod.website-files.com/6712204bac7da420428f9630/6712204bac7da420428f96ae_Rust-Light-p-500.png",
+        "background_url": "https://cdn.prod.website-files.com/6712204bac7da420428f9630/692610966331e1dc68bd742f_Copie%20de%20DSC00536%20(1)%20(1)%20(1)%20(1)-p-1080.png",
+        "card_url": "https://cdn.prod.website-files.com/6712204bac7da420428f9630/692610966331e1dc68bd742f_Copie%20de%20DSC00536%20(1)%20(1)%20(1)%20(1)-p-1080.png",
+        "teaser_thumb_url": "https://cdn.prod.website-files.com/6712204bac7da420428f9630/692610966331e1dc68bd742f_Copie%20de%20DSC00536%20(1)%20(1)%20(1)%20(1)-p-1080.png"
+      },
+      "labels": [
+        "core"
+      ],
+      "primary_label": "core",
+      "teaser": "Community Rust conference in Paris (also online).",
+      "schedule_note": "Dates confirmed \u2014 see the official event page for schedule, tickets, and CFP updates.",
+      "updates": {
+        "site": "https://www.rustinparis.com/",
+        "schedule": "https://www.rustinparis.com/"
       }
     },
     {
@@ -1989,8 +2050,8 @@
       "title": "TokioConf 2026",
       "status": "upcoming",
       "starts_on": "2026-04-20",
-      "ends_on": "2026-04-20",
-      "location": "Portland, Oregon, USA",
+      "ends_on": "2026-04-22",
+      "location": "Hyatt Regency Portland, Portland, Oregon, USA",
       "tags": [
         "async",
         "conference",
@@ -2000,23 +2061,24 @@
         "rust",
         "tokio"
       ],
-      "url": "https://tokioconf.com/",
+      "url": "https://www.tokioconf.com/",
       "why_it_matters": "Deep focus on async Rust and production service engineering\u2014directly relevant for high-load systems teams.",
       "about": "TokioConf is an event centered on async Rust, Tokio ecosystem tooling, and patterns for production services.",
       "featured_media": {
         "article": {
-          "title": "TokioConf site",
-          "url": "https://tokioconf.com/"
+          "title": "TokioConf 2026 \u2014 Attend",
+          "url": "https://www.tokioconf.com/attend"
         }
       },
       "sources": [
-        "https://tokioconf.com/"
+        "https://www.tokioconf.com/",
+        "https://www.tokioconf.com/attend"
       ],
       "media": {
-        "background_url": "https://image.thum.io/get/width/1200/https://tokioconf.com/",
-        "card_url": "https://image.thum.io/get/width/1200/https://tokioconf.com/",
-        "teaser_thumb_url": "https://image.thum.io/get/width/1200/https://tokioconf.com/",
-        "logo_url": "https://logo.clearbit.com/tokioconf.com"
+        "logo_url": "https://images.squarespace-cdn.com/content/v1/684740a4ce2d3d6d1305d005/539cf01a-e253-4e38-8848-c5721da44c25/favicon.ico?format=100w",
+        "background_url": "http://static1.squarespace.com/static/684740a4ce2d3d6d1305d005/t/692635b9b39139679bcd2e4d/1764111801065/pink+square.png?format=1500w",
+        "card_url": "http://static1.squarespace.com/static/684740a4ce2d3d6d1305d005/t/692635b9b39139679bcd2e4d/1764111801065/pink+square.png?format=1500w",
+        "teaser_thumb_url": "http://static1.squarespace.com/static/684740a4ce2d3d6d1305d005/t/692635b9b39139679bcd2e4d/1764111801065/pink+square.png?format=1500w"
       },
       "labels": [
         "infra",
@@ -2026,8 +2088,70 @@
       "teaser": "Deep focus on async Rust and production service engineering\u2014directly relevant for high-load systems teams.",
       "schedule_note": "Dates confirmed \u2014 see the official event page for schedule, tickets, and CFP updates.",
       "updates": {
-        "site": "https://tokioconf.com/",
-        "schedule": "https://tokioconf.com/"
+        "site": "https://www.tokioconf.com/",
+        "schedule": "https://www.tokioconf.com/attend"
+      },
+      "links": {
+        "site": "https://www.tokioconf.com/",
+        "schedule": "https://www.tokioconf.com/attend",
+        "x": "https://x.com/TokioConf",
+        "bsky": "https://bsky.app/profile/tokioconf.com"
+      }
+    },
+    {
+      "slug": "rustmeet-2026",
+      "title": "RustMeet 2026",
+      "status": "upcoming",
+      "starts_on": "2026-06-12",
+      "ends_on": "2026-06-14",
+      "location": "Krak\u00f3w, Poland + Online",
+      "tags": [
+        "community",
+        "conference",
+        "core",
+        "event",
+        "rust"
+      ],
+      "url": "https://rustmeet.eu/en/",
+      "why_it_matters": "Strong Central/Eastern Europe Rust community gathering with talks, workshops, and lightning talks (plus online stream).",
+      "links": {
+        "site": "https://rustmeet.eu/en/",
+        "cfp": "https://rustmeet.confreg.pl/",
+        "youtube": "https://www.youtube.com/@Rustmeet",
+        "linkedin": "https://www.linkedin.com/company/rustmeet/",
+        "bsky": "https://bsky.app/profile/rustmeet.bsky.social",
+        "mastodon": "https://c.im/@rustmeet",
+        "discord": "https://discord.gg/CsVnFrYVzm",
+        "instagram": "https://www.instagram.com/rustmeet/",
+        "facebook": "https://www.facebook.com/profile.php?id=61569188978197"
+      },
+      "about": "RustMeet is a Rust conference in Poland with an on-site event and online stream, featuring talks, workshops, lightning talks, and a social evening.",
+      "featured_media": {
+        "article": {
+          "title": "RustMeet 2026 CFP",
+          "url": "https://rustmeet.confreg.pl/"
+        }
+      },
+      "sources": [
+        "https://rustmeet.eu/en/",
+        "https://rustmeet.confreg.pl/",
+        "https://www.youtube.com/@Rustmeet"
+      ],
+      "media": {
+        "logo_url": "https://rustmeet.eu/static/img/logo/og.png",
+        "background_url": "https://rustmeet.eu/static/img/logo/og.png",
+        "card_url": "https://rustmeet.eu/static/img/logo/og.png",
+        "teaser_thumb_url": "https://rustmeet.eu/static/img/logo/og.png"
+      },
+      "labels": [
+        "core"
+      ],
+      "primary_label": "core",
+      "teaser": "Rust conference in Poland (Krak\u00f3w + online) with talks, workshops, lightning talks, and a social event.",
+      "schedule_note": "Dates confirmed \u2014 see the official event page for schedule, tickets, and CFP updates.",
+      "updates": {
+        "site": "https://rustmeet.eu/en/",
+        "schedule": "https://rustmeet.eu/en/"
       }
     },
     {
@@ -2035,8 +2159,8 @@
       "title": "RustLab 2026",
       "status": "upcoming",
       "starts_on": "2026-11-01",
-      "ends_on": "2026-11-30",
-      "location": "Bologna, Italy (exact dates TBA)",
+      "ends_on": "2026-11-03",
+      "location": "Savoia Regency Hotel, Bologna, Italy",
       "tags": [
         "conference",
         "core",
@@ -2045,21 +2169,22 @@
       ],
       "url": "https://rustlab.it/",
       "why_it_matters": "RustLab is a long-running conference with strong talk archives and a focused community.",
-      "about": "RustLab typically delivers practical talks and maintains strong community ties. Treat dates as month-only until the official schedule drops.",
+      "about": "RustLab is an international Rust conference with workshops and talks. Dates and venue are confirmed on the official site.",
       "featured_media": {
         "article": {
-          "title": "RustLab",
+          "title": "RustLab 2026",
           "url": "https://rustlab.it/"
         }
       },
       "sources": [
-        "https://rustlab.it/"
+        "https://rustlab.it/",
+        "https://www.youtube.com/@rustlabconference3671"
       ],
       "media": {
-        "background_url": "https://image.thum.io/get/width/1200/https://rustlab.it/",
-        "card_url": "https://image.thum.io/get/width/1200/https://rustlab.it/",
-        "teaser_thumb_url": "https://image.thum.io/get/width/1200/https://rustlab.it/",
-        "logo_url": "https://logo.clearbit.com/rustlab.it"
+        "logo_url": "https://www.datocms-assets.com/98516/1681902460-13_ticket-icona.png?auto=format&h=64&w=64",
+        "background_url": "https://www.datocms-assets.com/98516/1681900693-1_home.png?auto=format&fit=max&w=1200",
+        "card_url": "https://www.datocms-assets.com/98516/1681900693-1_home.png?auto=format&fit=max&w=1200",
+        "teaser_thumb_url": "https://www.datocms-assets.com/98516/1681900693-1_home.png?auto=format&fit=max&w=1200"
       },
       "labels": [
         "core"
@@ -2070,6 +2195,12 @@
       "updates": {
         "site": "https://rustlab.it/",
         "schedule": "https://rustlab.it/"
+      },
+      "links": {
+        "site": "https://rustlab.it/",
+        "x": "https://x.com/rustlab_conf",
+        "youtube": "https://www.youtube.com/@rustlabconference3671",
+        "mastodon": "https://mastodon.uno/@rustlab"
       }
     },
     {
