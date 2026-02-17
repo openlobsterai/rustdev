@@ -44,6 +44,74 @@ const NOT_FOUND_HTML: &str = r#"<!doctype html>
 </html>
 "#;
 
+const THELOBSTER_HTML: &str = r#"<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>thelobster.ai — OpenLobster</title>
+  <meta name="description" content="thelobster.ai — part of the OpenLobster ecosystem.">
+  <meta property="og:title" content="thelobster.ai — OpenLobster">
+  <meta property="og:description" content="thelobster.ai is now part of the OpenLobster ecosystem.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>">
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0d1117;
+      color: #c9d1d9;
+      font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      width: min(720px, calc(100% - 40px));
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      background: #161b22;
+      padding: 22px 24px;
+    }
+    h1 { margin: 0 0 8px; font-size: 22px; letter-spacing: -0.02em; }
+    p { margin: 0 0 14px; color: #8b949e; }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    a.btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #c9d1d9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a.btn:hover { border-color: #6e7681; text-decoration: none; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      color: #c9d1d9;
+    }
+    .note { margin-top: 16px; font-size: 12px; color: #6e7681; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>🦞 <span style="letter-spacing: -0.02em">thelobster.ai</span></h1>
+    <p>This domain is now part of the <b>OpenLobster</b> ecosystem. More soon.</p>
+    <div class="row">
+      <a class="btn" href="https://openlobster.ai/">OpenLobster</a>
+      <a class="btn" href="https://lobstermarket.ai/">LobsterMarket</a>
+      <a class="btn" href="https://github.com/openlobsterai">GitHub</a>
+    </div>
+    <div class="note">You reached this via <code>rust.dev/thelobster</code>.</div>
+  </main>
+</body>
+</html>
+"#;
+
 fn prefers_json(headers: &HeaderMap) -> bool {
     headers
         .get(header::ACCEPT)
@@ -978,6 +1046,29 @@ async fn index(
     render_rust_home(&hb, &promo, &rustdev)
 }
 
+async fn thelobster(req: HttpRequest) -> HttpResponse {
+    if !is_allowed_host(&req) {
+        return not_found_for_request(&req);
+    }
+
+    if prefers_json(req.headers()) {
+        return HttpResponse::Ok().json(json!({
+            "slug": "thelobster",
+            "title": "thelobster.ai",
+            "links": {
+                "openlobster": "https://openlobster.ai/",
+                "lobstermarket": "https://lobstermarket.ai/",
+                "github": "https://github.com/openlobsterai",
+            }
+        }));
+    }
+
+    HttpResponse::Ok()
+        .append_header((header::CONTENT_TYPE, HTML_CONTENT_TYPE))
+        .append_header((header::CACHE_CONTROL, HTML_CACHE_CONTROL))
+        .body(THELOBSTER_HTML)
+}
+
 async fn rustdev_ecosystems_list(
     rustdev: web::Data<RustDevContent>,
     hb: web::Data<Handlebars<'_>>,
@@ -1435,6 +1526,8 @@ async fn main() -> std::io::Result<()> {
             .app_data(hb_data.clone())
             .service(web::resource("/").route(web::get().to(index)))
             .service(web::resource("/index.html").route(web::get().to(index)))
+            .service(web::resource("/thelobster").route(web::get().to(thelobster)))
+            .service(web::resource("/thelobster/").route(web::get().to(thelobster)))
             .service(web::resource("/ecosystems").route(web::get().to(rustdev_ecosystems_list)))
             .service(
                 web::resource("/ecosystems/{slug}").route(web::get().to(rustdev_ecosystem_page)),
