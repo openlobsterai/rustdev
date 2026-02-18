@@ -14,9 +14,12 @@
         a:hover { text-decoration: underline; }
         .wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
         #head { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 0; }
-        #head .wrap { display: flex; align-items: center; gap: 24px; }
+        #head .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
         #logo { font: bold 18px/1 monospace; color: var(--fg); }
         #logo b { color: var(--orange); }
+        #nav { display: flex; gap: 4px; flex-wrap: wrap; }
+        #nav a { color: var(--fg2); padding: 4px 10px; border-radius: 4px; font-size: 13px; }
+        #nav a:hover, #nav a.current { color: var(--fg); background: var(--bg3); text-decoration: none; }
         .back { color: var(--fg2); font-size: 13px; }
         main { padding: 32px 0; }
         .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
@@ -69,7 +72,15 @@
 <header id="head">
     <div class="wrap">
         <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
-        <a href="/ecosystems" class="back">← back to ecosystems</a>
+        <nav id="nav">
+            <a href="/learn">learn</a>
+            <a href="/creators">creators</a>
+            <a href="/ecosystems">ecosystems</a>
+            <a href="/news">news</a>
+            <a href="/tools">tools</a>
+            <a href="/events">events</a>
+            <a href="/me">🦀</a>
+        </nav>
     </div>
 </header>
 <div class="lobster-notice">

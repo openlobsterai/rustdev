@@ -29,7 +29,41 @@
       background: var(--bg);
       color: var(--text);
     }
-    header {
+    #head {
+      border-bottom: 1px solid #1f2933;
+      background: var(--panel);
+    }
+    #head .wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+    #logo {
+      font: bold 18px/1 monospace;
+      color: var(--text);
+      text-decoration: none;
+    }
+    #logo b { color: var(--accent); }
+    #nav {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    #nav a {
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-decoration: none;
+    }
+    #nav a:hover, #nav a.current {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .hero {
       border-bottom: 1px solid #1f2933;
       background: var(--panel);
     }
@@ -102,7 +136,7 @@
       text-align: center;
     }
     @media (max-width: 900px) {
-      header .wrap { padding-top: 28px; padding-bottom: 28px; }
+      .hero .wrap { padding-top: 28px; padding-bottom: 28px; }
       .links {
         justify-content: center;
         flex-wrap: wrap;
@@ -116,7 +150,22 @@
   </style>
 </head>
 <body>
-  <header>
+  <header id="head">
+    <div class="wrap">
+      <a href="/" id="logo"><b>&gt;</b> rust.dev</a>
+      <nav id="nav">
+        <a href="/learn">learn</a>
+        <a href="/creators">creators</a>
+        <a href="/ecosystems">ecosystems</a>
+        <a href="/news">news</a>
+        <a href="/tools">tools</a>
+        <a href="/events">events</a>
+        <a href="/me">🦀</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
     <div class="wrap">
       <h1><span>rust.dev</span></h1>
       <p>Rust-first engineer shipping blockchain, payments, smart contracts, bridges and L1/L2.</p>
@@ -139,7 +188,7 @@
         </a>
       </div>
     </div>
-  </header>
+  </section>
 
   <main class="wrap">
     <section>
