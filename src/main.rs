@@ -18,6 +18,7 @@ const HTML_CACHE_CONTROL: &str = "public, max-age=120, stale-while-revalidate=60
 
 const DATA_PATH: &str = "static/rustdev-hub-seed-v3.json";
 const PROMO_PATH: &str = "static/promo.json";
+const NIK_HTML_PATH: &str = "static/nik.html";
 
 const NOT_FOUND_HTML: &str = r#"<!doctype html>
 <html lang="en">
@@ -1069,6 +1070,27 @@ async fn thelobster(req: HttpRequest) -> HttpResponse {
         .body(THELOBSTER_HTML)
 }
 
+#[derive(Clone)]
+struct ProfilePages {
+    nik: String,
+}
+
+async fn load_profile_pages() -> std::io::Result<ProfilePages> {
+    let nik = fs::read_to_string(NIK_HTML_PATH).await?;
+    Ok(ProfilePages { nik })
+}
+
+async fn profile_page(pages: web::Data<ProfilePages>, req: HttpRequest) -> HttpResponse {
+    if !is_allowed_host(&req) {
+        return not_found_for_request(&req);
+    }
+
+    HttpResponse::Ok()
+        .append_header((header::CONTENT_TYPE, HTML_CONTENT_TYPE))
+        .append_header((header::CACHE_CONTROL, HTML_CACHE_CONTROL))
+        .body(pages.nik.clone())
+}
+
 async fn rustdev_ecosystems_list(
     rustdev: web::Data<RustDevContent>,
     hb: web::Data<Handlebars<'_>>,
@@ -1505,6 +1527,7 @@ async fn main() -> std::io::Result<()> {
     let rustdev_content = load_rust_dev_content(DATA_PATH).await?;
     let promo_content = load_promo_content(PROMO_PATH).await.unwrap_or_default();
     let handlebars = build_handlebars()?;
+    let profile_pages = load_profile_pages().await?;
 
     let port: u16 = env::var("PORT")
         .ok()
@@ -1518,16 +1541,22 @@ async fn main() -> std::io::Result<()> {
     let rustdev_data = web::Data::new(rustdev_content);
     let promo_data = web::Data::new(promo_content);
     let hb_data = web::Data::new(handlebars);
+    let profile_pages_data = web::Data::new(profile_pages);
 
     HttpServer::new(move || {
         App::new()
             .app_data(rustdev_data.clone())
             .app_data(promo_data.clone())
             .app_data(hb_data.clone())
+            .app_data(profile_pages_data.clone())
             .service(web::resource("/").route(web::get().to(index)))
             .service(web::resource("/index.html").route(web::get().to(index)))
             .service(web::resource("/thelobster").route(web::get().to(thelobster)))
             .service(web::resource("/thelobster/").route(web::get().to(thelobster)))
+            .service(web::resource("/me").route(web::get().to(profile_page)))
+            .service(web::resource("/me/").route(web::get().to(profile_page)))
+            .service(web::resource("/nik").route(web::get().to(profile_page)))
+            .service(web::resource("/nik/").route(web::get().to(profile_page)))
             .service(web::resource("/ecosystems").route(web::get().to(rustdev_ecosystems_list)))
             .service(
                 web::resource("/ecosystems/{slug}").route(web::get().to(rustdev_ecosystem_page)),
